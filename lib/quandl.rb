@@ -1,4 +1,4 @@
-require "quandl/version"
+require 'quandl/version'
 
 module Quandl
   # Enable configuration like:
