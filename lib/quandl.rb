@@ -50,17 +50,17 @@ module Quandl
     attr_reader :source, :table, :format, :options
 
     def initialize(params = {})
-      @source = params[:source]
-      @table = params[:table]
-      @format = params[:format] || 'json'
+      @source  = params[:source]
+      @table   = params[:table]
+      @format  = params[:format] || 'json'
       @options = params[:options] || {}
     end
 
     def get
       Quandl.get(
-        source: source,
-        table: table,
-        format: format,
+        source:  source,
+        table:   table,
+        format:  format,
         options: options
       )
     end
