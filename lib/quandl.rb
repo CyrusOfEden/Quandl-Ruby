@@ -2,7 +2,7 @@ require 'quandl/version'
 require 'open-uri'
 
 module Quandl
-  QUANDL_URI = 'http://www.quandl.com/api'
+  API_URI = 'http://www.quandl.com/api'
 
   class << self
     attr_accessor :configuration
@@ -21,7 +21,7 @@ module Quandl
   end
 
   def self.build_uri(source, table, format, params)
-    uri = URI([QUANDLE_URI, configuration.api_version, 'datasets', source, table].join('/') + ".#{format}")
+    uri = URI([API_URI, configuration.api_version, 'datasets', source, table].join('/') + ".#{format}")
     if configuration.auth_token
       params[:auth_token] = configuration.auth_token
     end
@@ -30,7 +30,14 @@ module Quandl
   end
 
   def self.get(params = {})
-    yield build_uri(params[:source], params[:table], params[:format], params[:options]).open
+    open(
+      build_uri(
+        params[:source],
+        params[:table],
+        params[:format],
+        params[:options]
+      )
+    ).read
   end
 
   class Configuration
@@ -49,20 +56,23 @@ module Quandl
   class Dataset
     attr_reader :source, :table, :format, :options
 
-    def initialize(params = {})
+    def initialize(params = {}, options = {})
+      if params.is_a? String
+        match_data = params.match(/(.+)\/(.+)\.(.+)/)
+        params = {
+          source: match_data[1],
+          table:  match_data[2],
+          format: match_data[3]
+        }
+      end
       @source  = params[:source]
       @table   = params[:table]
       @format  = params[:format] || 'json'
-      @options = params[:options] || {}
+      @options = options
     end
 
     def get
-      Quandl.get(
-        source:  source,
-        table:   table,
-        format:  format,
-        options: options
-      )
+      yield Quandl.get(source: source, table: table, format: format, options: options)
     end
   end
 
