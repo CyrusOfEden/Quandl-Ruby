@@ -68,7 +68,12 @@ module Quandl
     end
 
     def get
-      yield Quandl.get(source: source, table: table, options: options)
+      data = Quandl.get(source: source, table: table, options: options)
+      if block_given?
+        yield(data)
+      else
+        data
+      end
     end
   end
 
@@ -87,7 +92,12 @@ module Quandl
     end
 
     def get
-      yield Quandl.get(query: query, options: options)
+      data = Quandl.get(query: query, options: options)
+      if block_given?
+        yield(data)
+      else
+        data
+      end
     end
   end
 end
