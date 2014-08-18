@@ -1,4 +1,4 @@
-Copyright (c) 2014 K Nouroozi
+Copyright (c) 2014 Kash Nouroozi
 
 MIT License
 
