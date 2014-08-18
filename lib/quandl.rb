@@ -1,10 +1,6 @@
 require 'quandl/version'
 
 module Quandl
-  # Enable configuration like:
-  #   Quandl.configure do |q|
-  #     ...
-  #   end
   class << self
     attr_accessor :configuration
   end
