@@ -2,7 +2,7 @@ require 'quandl/version'
 require 'open-uri'
 
 module Quandl
-  API_URI = 'http://www.quandl.com/api'
+  API_URI = 'http://www.quandl.com/api/'
 
   class << self
     attr_accessor :configuration
@@ -20,24 +20,23 @@ module Quandl
     yield configuration
   end
 
-  def self.build_uri(source, table, format, params)
-    uri = URI([API_URI, configuration.api_version, 'datasets', source, table].join('/') + ".#{format}")
+  def self.build_uri(params)
+    path = [configuration.api_version, 'datasets']
     if configuration.auth_token
       params[:auth_token] = configuration.auth_token
     end
-    uri.query = URI.encode_www_form(params)
-    uri
+    unless params[:query]
+      path << params.delete(:source)
+      path << params.delete(:table)
+    end
+    path = path.join('/') + '.' + (params[:options][:format] || 'json')
+    URI(API_URI + path).tap do |uri|
+      uri.query = URI.encode_www_form(params[:options])
+    end
   end
 
   def self.get(params = {})
-    open(
-      build_uri(
-        params[:source],
-        params[:table],
-        params[:format],
-        params[:options]
-      )
-    ).read
+    open(build_uri(params)).read
   end
 
   class Configuration
@@ -54,32 +53,41 @@ module Quandl
   end
 
   class Dataset
-    attr_reader :source, :table, :format, :options
-
+    attr_accessor :source, :table, :options
     def initialize(params = {}, options = {})
       if params.is_a? String
-        match_data = params.match(/(.+)\/(.+)\.(.+)/)
+        match_data = params.match(/(.+)\/(.+)/)
         params = {
           source: match_data[1],
-          table:  match_data[2],
-          format: match_data[3]
+          table:  match_data[2]
         }
       end
-      @source  = params[:source]
-      @table   = params[:table]
-      @format  = params[:format] || 'json'
+      @source  = params[:source].upcase
+      @table   = params[:table].upcase
       @options = options
     end
 
     def get
-      yield Quandl.get(source: source, table: table, format: format, options: options)
+      yield Quandl.get(source: source, table: table, options: options)
     end
   end
 
   class Metadata < Dataset
-    def initialize(params = {})
+    def initialize(params = {}, options = {})
+      options[:exclude_data] = true
       super
-      @options[:exclude_data] = true
+    end
+  end
+
+  class Search
+    attr_accessor :query, :options
+    def initialize(query, options = {})
+      @query = query
+      @options = options
+    end
+
+    def get
+      yield Quandl.get(query: query, options: options)
     end
   end
 end
