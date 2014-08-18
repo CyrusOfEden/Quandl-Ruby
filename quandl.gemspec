@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'quandl/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'quandl'
+  spec.name          = 'quandl_ruby'
   spec.version       = Quandl::VERSION
   spec.authors       = ['Kash Nouroozi']
   spec.email         = ['hi@knrz.co']
   spec.summary       = %q{Ruby wrapper for the Quandl API (www.quandle.com)}
   spec.description   = ''
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/knrz/Quandl-Ruby'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
