@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Quandl::VERSION
   spec.authors       = ['Kash Nouroozi']
   spec.email         = ['hi@knrz.co']
-  spec.summary       = %q{Ruby wrapper for the Quandl API (http://quandle.com)}
+  spec.summary       = %q{Ruby wrapper for the Quandl API (www.quandle.com)}
   spec.description   = ''
   spec.homepage      = ''
   spec.license       = 'MIT'
