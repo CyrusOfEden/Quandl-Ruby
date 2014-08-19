@@ -9,7 +9,7 @@ module Quandl
     end
 
     def get
-      data = Quandl.get(source: source, table: table, options: options)
+      data = Quandl::Request.new.get(source: source, table: table, options: options)
       if block_given?
         yield(data)
       else
