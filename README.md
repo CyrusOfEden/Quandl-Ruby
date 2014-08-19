@@ -2,7 +2,7 @@
 
 # Quandl
 
-Ruby wrapper for the Quandl API (www.quandle.com).
+Ruby wrapper for the Quandl API (www.quandl.com).
 
 Supports:
 
