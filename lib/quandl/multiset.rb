@@ -1,21 +1,29 @@
 module Quandl
   class Multiset
-    attr_accessor :datasets, :options
+    attr_accessor :sets, :options, :data
 
     def self.get(datasets, options = {})
-      new(datasets, options).get
+      instance = new(datasets, options)
+      instance.get
+      if block_given?
+        yield(instance.data)
+      else
+        instance.data
+      end
     end
 
     def initialize(datasets, options = {})
-      @datasets = datasets
+      @sets = datasets
       @options = options
     end
 
     def get
-      data = Quandl::Request.new('multisets', {
-        datasets: datasets,
-        options: options
-      }).get
+      if !data || reload
+        self.data = Quandl::Request.new('multisets', {
+          datasets: sets,
+          options: options
+        }).get
+      end
       if block_given?
         yield(data)
       else

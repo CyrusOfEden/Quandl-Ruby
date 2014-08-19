@@ -41,28 +41,17 @@ end
 To get a dataset, create a new `Quandl::Dataset`:
 
 ```ruby
-gdp = Quandl::Dataset.new('FRED/GDP')
-
-# To pass the data to a block provide a block to Quandl::Dataset#get,
-# which will otherwise return the Quandl data
-# Both of the following present the same data:
-gdp.get do |data|
-  # Do stuff with the data, by default in JSON format
-end
-
-data = gdp.get
+gdp = Quandl::Dataset.get('FRED/GDP')
 ```
 
 `Quandl::Dataset#new` accepts an options hash as a second argument. Put anything that you would otherwise but as an argument in the url here.
 
 ```ruby
-aapl = Quandl::Dataset.new('WIKI/AAPL', {
+aapl = Quandl::Dataset.get('WIKI/AAPL', {
   format: 'csv',
   column: 4,
   collapse: 'annual'
 })
-
-aapl.get
 ```
 
 
@@ -71,9 +60,7 @@ aapl.get
 The `Quandl::Metadata` API is exactly the same as the `Quandl::Dataset` API, except that it only returns metadata.
 
 ```ruby
-oil = Quandl::Metadata.new('NSE/OIL')
-
-oil.get # => returns metadata for 'NSE/OIL'
+oil = Quandl::Metadata.get('NSE/OIL')
 ```
 
 
@@ -82,9 +69,7 @@ oil.get # => returns metadata for 'NSE/OIL'
 The `Quandl::Multiset` class allows you to build multisets for yourself. Accepts `options` hash as a secondary argument to the initializer.
 
 ```ruby
-example = Quandl::Multiset.new(['FRED/GDP/1', 'WIKI/AAPL/4'])
-
-example.get
+example = Quandl::Multiset.get(['FRED/GDP/1', 'WIKI/AAPL/4'])
 ```
 
 Unlike the official Quandl API, use `/` (instead of `.`) as your delimiter for source, table, and column number to maintain consistency with `Quandl::Dataset`.
@@ -95,9 +80,7 @@ Unlike the official Quandl API, use `/` (instead of `.`) as your delimiter for s
 The `Quandl::Search` API is exactly the same as the `Quandl::Dataset` API, except that it returns a query.
 
 ```ruby
-results = Quandl::Search.new('crude oil')
-
-results.get # => returns search results for 'crude oil'
+results = Quandl::Search.get('crude oil')
 ```
 
 
@@ -107,14 +90,12 @@ The `Quandl::Favorites` API allows you to retrieve the favorites of any user.
 
 ```ruby
 # If an authorization token was previously configured with Quandl.configure,
-# then one is not required for Quandl::Favorites.new
+# then one is not required for Quandl::Favorites.get
 
-favs = Quandl::Favorites.new(
+favs = Quandl::Favorites.get(
   :auth_token => 'an auth token here'
   # Any other options here
 )
-
-favs.get
 ```
 
 

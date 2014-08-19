@@ -1,9 +1,15 @@
 module Quandl
   class Favorites
-    attr_reader :auth_token, :options
+    attr_reader :auth_token, :options, :data
 
     def self.get(options = {})
-      new(options).get
+      instance = new(options)
+      instance.get
+      if block_given?
+        yield(instance.data)
+      else
+        instance.data
+      end
     end
 
     def initialize(options = {})
@@ -11,11 +17,13 @@ module Quandl
       @options = options
     end
 
-    def get
-      data = Quandl::Request.new('current_user/collections/datasets/favourites', {
-        options: options,
-        auth_token: auth_token
-      }).get
+    def get(reload = false)
+      if !data || reload
+        self.data = Quandl::Request.new('current_user/collections/datasets/favourites', {
+          options: options,
+          auth_token: auth_token
+        }).get
+      end
       if block_given?
         yield(data)
       else

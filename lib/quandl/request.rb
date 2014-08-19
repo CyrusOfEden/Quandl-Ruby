@@ -3,6 +3,7 @@ module Quandl
 
   class Request
     attr_accessor :uri
+
     def initialize(base, params)
       path = [Quandl.configuration.api_version, base]
       if Quandl.configuration.auth_token
@@ -17,6 +18,9 @@ module Quandl
       path = path.join('/')
       if params[:datasets]
         params[:options][:columns] = params[:datasets].map { |set| set.split('/').join('.') }
+      end
+      if params[:dataset]
+        path += "/#{params[:dataset]}"
       end
       path += '.' + ((params[:options] || {}).delete(:format) || 'json')
       @uri = URI(API_URI + path).tap do |uri|

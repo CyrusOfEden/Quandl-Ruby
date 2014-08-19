@@ -1,24 +1,29 @@
 module Quandl
   class Dataset
-    attr_accessor :source, :table, :options
+    attr_accessor :set, :options, :data
 
-    def self.get(params = '', options = {})
-      new(params, options).get
+    def self.get(params, options = {})
+      instance = new(params, options)
+      instance.get
+      if block_given?
+        yield(data)
+      else
+        data
+      end
     end
 
-    def initialize(params = '', options = {})
-      match_data = params.match(/(.+)\/(.+)/)
-      @source = match_data[1].upcase,
-      @table = match_data[2].upcase
+    def initialize(params, options = {})
+      @set = params
       @options = options
     end
 
-    def get
-      data = Quandl::Request.new('datasets', {
-        source: source,
-        table: table,
-        options: options
-      }).get
+    def get(reload = false)
+      if !data || reload
+        self.data = Quandl::Request.new('datasets', {
+          dataset: set,
+          options: options
+        }).get
+      end
       if block_given?
         yield(data)
       else
