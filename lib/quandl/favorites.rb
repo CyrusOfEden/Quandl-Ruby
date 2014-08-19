@@ -1,19 +1,18 @@
 module Quandl
   class Favorites
     attr_reader :auth_token, :options
-    def initialize(auth_token = nil, options = {})
-      @auth_token = auth_token || Quandl.configuration.auth_token
+    def initialize(options = {})
+      @auth_token = options.delete(:auth_token) || Quandl.configuration.auth_token
       @options = options
     end
 
     def get
-      path = [Quandl.configuration.api_version, 'current_user', 'collections', 'datasets', 'favourites']
-      path = path.join('/') + '.' + (options[:format] || 'json')
-      uri = URI(Quandl::API_URI + path)
-      uri.query = URI.encode_www_form(auth_token: auth_token)
-      data = open(uri).read
+      data = Quandl::Request.new('current_user/collections/datasets/favourites', {
+        options: options,
+        auth_token: auth_token
+      }).get
       if block_given?
-        yield data
+        yield(data)
       else
         data
       end
