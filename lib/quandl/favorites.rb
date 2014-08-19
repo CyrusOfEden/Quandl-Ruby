@@ -1,6 +1,11 @@
 module Quandl
   class Favorites
     attr_reader :auth_token, :options
+
+    def self.get(options = {})
+      new(options).get
+    end
+
     def initialize(options = {})
       @auth_token = options.delete(:auth_token) || Quandl.configuration.auth_token
       @options = options

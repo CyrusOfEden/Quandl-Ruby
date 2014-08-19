@@ -1,6 +1,11 @@
 module Quandl
   class Dataset
     attr_accessor :source, :table, :options
+
+    def self.get(params = '', options = {})
+      new(params, options).get
+    end
+
     def initialize(params = '', options = {})
       match_data = params.match(/(.+)\/(.+)/)
       @source = match_data[1].upcase,

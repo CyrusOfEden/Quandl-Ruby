@@ -1,6 +1,11 @@
 module Quandl
   class Multiset
     attr_accessor :datasets, :options
+
+    def self.get(datasets, options = {})
+      new(datasets, options).get
+    end
+
     def initialize(datasets, options = {})
       @datasets = datasets
       @options = options
