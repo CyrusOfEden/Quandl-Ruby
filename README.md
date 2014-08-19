@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/quandl_ruby.svg)](http://badge.fury.io/rb/quandl_ruby)
+
 # Quandl
 
 Ruby wrapper for the Quandl API (www.quandle.com).
