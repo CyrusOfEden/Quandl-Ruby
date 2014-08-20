@@ -32,4 +32,6 @@ module Quandl
       end
     end
   end
+
+  Favourites = Favorites
 end
