@@ -62,7 +62,7 @@ query = Quandl::Class.new(query, options)
 # Use instance#get to retrieve data from Quandl
 data = query.get
 
-# Instantiating a calling the `get` method memoizes the response
+# Instantiating and then calling the `get` method memoizes the response
 # Pass in `true` to instance#get to clear the cache and reload the data
 data = query.get(true)
 
@@ -102,7 +102,8 @@ comparison = Quandl::Multiset.new(datasets, options)
 #   Example from: http://www.quandl.com/help/api#Doing-a-Search
 query = 'crude oil'
 options = {
-  per_page: 100
+  per_page: 50,
+  page: 2
 }
 results = Quandl::Search.get(query, options)
 ```
