@@ -128,6 +128,8 @@ my_favorites = Quandl::Favorites.get
 
 # Or pass in another API key as the first argument to override your own
 some_other_guys_favorites = Quandl::Favorites.get('that_guys_api_key')
+
+# For Brits and Canucks, Quandl::Favorites is aliased as Quandl::Favourites
 ```
 
 
