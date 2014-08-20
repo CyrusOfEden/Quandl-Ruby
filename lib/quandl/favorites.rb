@@ -1,34 +1,22 @@
 module Quandl
-  class Favorites
-    attr_reader :auth_token, :options, :data
-
-    def self.get(options = {})
-      instance = new(options)
-      instance.get
-      if block_given?
-        yield(instance.data)
-      else
-        instance.data
-      end
-    end
-
+  class Favorites < Quandl::Dataset
     def initialize(options = {})
-      @auth_token = options.delete(:auth_token) || Quandl.configuration.auth_token
+      @query = options.delete(:auth_token) || Quandl.configuration.auth_token
       @options = options
     end
 
     def get(reload = false)
-      if !data || reload
+      if !@data || reload
         raw_data = Quandl::Request.new('current_user/collections/datasets/favourites', {
           options: options,
-          auth_token: auth_token
+          auth_token: query
         }).get
-        self.data = Quandl.parse(raw_data, (options[:format] || :json).to_sym)
+        @data = Quandl.parse(raw_data, (options[:format] || :json).to_sym)
       end
       if block_given?
-        yield(data)
+        yield(@data)
       else
-        data
+        @data
       end
     end
   end
