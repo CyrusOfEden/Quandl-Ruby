@@ -1,6 +1,7 @@
 require_relative 'quandl/version'
 require_relative 'quandl/configuration'
 require_relative 'quandl/parse'
+require_relative 'quandl/filter'
 require_relative 'quandl/dataset'
 require_relative 'quandl/metadata'
 require_relative 'quandl/multiset'
