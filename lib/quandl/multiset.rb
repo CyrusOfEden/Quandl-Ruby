@@ -19,10 +19,11 @@ module Quandl
 
     def get
       if !data || reload
-        self.data = Quandl::Request.new('multisets', {
+        raw_data = Quandl::Request.new('multisets', {
           datasets: sets,
           options: options
         }).get
+        self.data = Quandl.parse(raw_data, (options[:format] || :json).to_sym)
       end
       if block_given?
         yield(data)

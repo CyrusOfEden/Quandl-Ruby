@@ -19,10 +19,11 @@ module Quandl
 
     def get(reload = false)
       if !data || reload
-        self.data = Quandl::Request.new('current_user/collections/datasets/favourites', {
+        raw_data = Quandl::Request.new('current_user/collections/datasets/favourites', {
           options: options,
           auth_token: auth_token
         }).get
+        self.data = Quandl.parse(raw_data, (options[:format] || :json).to_sym)
       end
       if block_given?
         yield(data)

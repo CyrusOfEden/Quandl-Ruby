@@ -1,3 +1,5 @@
+require 'open-uri'
+
 module Quandl
   API_URI = 'http://www.quandl.com/api/'
 
@@ -22,7 +24,7 @@ module Quandl
       if params[:dataset]
         path += "/#{params[:dataset]}"
       end
-      path += '.' + ((params[:options] || {}).delete(:format) || 'json')
+      path += '.' + (params[:options][:format] || 'json').to_s
       @uri = URI(API_URI + path).tap do |uri|
         uri.query = URI.encode_www_form(params[:options])
       end

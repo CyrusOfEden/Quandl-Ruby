@@ -6,9 +6,9 @@ module Quandl
       instance = new(params, options)
       instance.get
       if block_given?
-        yield(data)
+        yield(instance.data)
       else
-        data
+        instance.data
       end
     end
 
@@ -19,10 +19,11 @@ module Quandl
 
     def get(reload = false)
       if !data || reload
-        self.data = Quandl::Request.new('datasets', {
+        raw_data = Quandl::Request.new('datasets', {
           dataset: set,
           options: options
         }).get
+        self.data = Quandl.parse(raw_data, (options[:format] || :json).to_sym)
       end
       if block_given?
         yield(data)
