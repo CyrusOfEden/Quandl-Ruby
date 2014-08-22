@@ -44,13 +44,5 @@ module Quandl
         self
       end
     end
-
-    def metadata(reload = false)
-      value(reload).dup.tap { |data| data.delete(:data) }
-    end
-
-    def data(reload = false)
-      value(reload)[:data]
-    end
   end
 end

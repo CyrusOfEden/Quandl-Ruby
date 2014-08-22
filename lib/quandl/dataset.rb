@@ -13,19 +13,26 @@ module Quandl
       @options = options
     end
 
-    def value(reload = false)
-      if !@data || reload
-        raw_data = Quandl::Request.new('datasets', {
-          dataset: query,
-          options: options
-        }).get
-        @data = Quandl.parse(raw_data, (options[:format] || :json).to_sym)
+    [:data, :metadata].each do |data|
+      define_method(data) do |bust_cache = false|
+        cache = instance_variable_get "@#{data}"
+        if cache && !bust_cache
+          cache
+        else
+          reload
+          instance_variable_get "@#{data}"
+        end
       end
-      if block_given?
-        yield(@data)
-      else
-        @data
-      end
+    end
+
+    def reload
+      raw_data = Quandl::Request.new('datasets', {
+        dataset: query,
+        options: options
+      }).get
+      response = Quandl.parse(raw_data, (options[:format] || :json).to_sym)
+      @data = response.delete(:data)
+      @metadata = response
     end
   end
 end
