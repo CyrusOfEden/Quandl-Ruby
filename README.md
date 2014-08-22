@@ -132,27 +132,23 @@ gdp = Quandl::Dataset.get('FRED/GDP')
 #   Example from: http://www.quandl.com/help/api#A-Multiset-Example
 
 datasets = ['FRED/GDP/1', 'DOE/RWTC/1', 'WIKI/AAPL/4']
-options = {
-  collapse: 'annual',
-  transformation: 'rdiff',
-  rows: 10
-}
-comparison = Quandl::Multiset.new(datasets, options)
+comparison = Quandl::Multiset.get(datasets).
+               collapse(:annual).
+               transform(:rdiff).
+               limit(10)
 # Unlike the official Quandl REST API, separate source, table, and column numbers
 # With `/` as opposed to `.` to maintain consistency with Quandl::Dataset
 ```
 
 ### Doing A Search
 
+Note that Quandl::Search does not have access to the API option-setting methods. Instead, it has #per_page and #page, which correspond with the `per_page` and `page` url parameters of the Quandl API
+
 ```ruby
 # Get search results for crude oil
 #   Example from: http://www.quandl.com/help/api#Doing-a-Search
 query = 'crude oil'
-options = {
-  per_page: 50,
-  page: 2
-}
-results = Quandl::Search.get(query, options)
+results = Quandl::Search.get(query).per_page(20).page(4)
 ```
 
 ### Getting Metadata
@@ -174,7 +170,7 @@ oil_metadata = Quandl::Metadata.get('NSE/OIL')
 my_favorites = Quandl::Favorites.get
 
 # Or pass in another API key as the first argument to override your own
-some_other_guys_favorites = Quandl::Favorites.get('that_guys_api_key')
+another_guys_favorites = Quandl::Favorites.get('that_guys_api_key')
 
 # For Brits and Canucks, Quandl::Favorites is aliased as Quandl::Favourites
 ```
