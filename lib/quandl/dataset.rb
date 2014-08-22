@@ -10,6 +10,7 @@ module Quandl
       response = Quandl.parse(raw_data, (options[:format] || :json).to_sym)
       @data = response.delete(:data)
       @metadata = response
+      self
     end
   end
 end
