@@ -1,35 +1,38 @@
 module Quandl
   class Dataset
-    attr_accessor :set, :options, :data
+    attr_accessor :query, :options
 
-    def self.get(params, options = {})
-      instance = new(params, options)
-      instance.get
-      if block_given?
-        yield(instance.data)
-      else
-        instance.data
-      end
+    include Quandl::Filter
+
+    def self.get(*params)
+      new(*params)
     end
 
-    def initialize(params, options = {})
-      @set = params
+    def initialize(query, options = {})
+      @query = query
       @options = options
     end
 
-    def get(reload = false)
-      if !data || reload
-        raw_data = Quandl::Request.new('datasets', {
-          dataset: set,
-          options: options
-        }).get
-        self.data = Quandl.parse(raw_data, (options[:format] || :json).to_sym)
+    [:data, :metadata].each do |data|
+      define_method(data) do |bust_cache = false|
+        cache = instance_variable_get "@#{data}"
+        if cache && !bust_cache
+          cache
+        else
+          reload!
+          instance_variable_get "@#{data}"
+        end
       end
-      if block_given?
-        yield(data)
-      else
-        data
-      end
+    end
+
+    def reload!
+      raw_data = Quandl::Request.new('datasets', {
+        dataset: query,
+        options: options
+      }).get
+      response = Quandl.parse(raw_data, (options[:format] || :json).to_sym)
+      @data = response.delete(:data)
+      @metadata = response
     end
   end
 end

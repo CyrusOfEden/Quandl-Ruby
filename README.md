@@ -57,19 +57,66 @@ All the above classes have the same API:
 #   `:csv`  => parsed CSV into hashes
 #   `:xml`  => a string of unparsed xml
 # Set the format by providing a `:format` key in the options hash
+# Quandl::Class.get is an alias for Quandl::Class.new
 query = Quandl::Class.new(query, options)
 
-# Use instance#get to retrieve data from Quandl
-data = query.get
+# Use instance#data to retrieve data from Quandl
+data = query.data
 
-# Instantiating and then calling the `get` method memoizes the response
-# Pass in `true` to instance#get to clear the cache and reload the data
-data = query.get(true)
-
-# The following is a shortcut to Class.new(query, options).get,
-# albeit with no build-in memoization:
-data = Quandl::Class.get(query, options)
+# Instantiating and then calling the `data` method memoizes the response
+# Pass in `true` to instance#data to clear the cache
+data = query.data(true)
 ```
+
+
+#### An Alternative to Passing in an Options Hash
+
+You can also pass in options by calling methods on an instance of a `Quandl::Class`:
+
+```ruby
+# This will make more sense if you read through:
+#   http://www.quandl.com/help/api#Data-Manipulation
+gdp = Quandl::Dataset.get('FRED/GDP')
+
+# Corresponds to the `rows` parameter. Aliased as #rows.
+gdp.limit(20)
+
+# Corresponds to the `sort_order` parameter. Aliased as #sort.
+gdp.order(:asc) # Only accepts :asc or :desc
+
+# Corresponds to the `column` parameter.
+gdp.column(4)
+
+# Corresponds to the `collapse` parameter. Aliased as #frequency
+# Accepts: :none, :daily, :weekly, :monthly, :quarterly, :annual
+gdp.collapse(:annual)
+
+# Corresponds to the `exclude_headers` parameter.
+gdp.headers(false) # (sets `exclude_headers` to `true`)
+
+# Corresponds to the `trim_start` parameter. Also accepts an instance of Date.
+gdp.start('2010-01-01')
+
+# Corresponds to the `trim_end` parameter. Also accepts an instance of Date.
+gdp.end('2014-01-01')
+
+# Corresponds to the `transformation` parameter.
+# Accepts: :diff, :rdiff, :cumul, :normalize
+gdp.transform(:normalize)
+
+# After all the above, call #metadata or #data to retrieve the respective data
+gdp.metadata # => returns metadata for 'FRED/GDP'
+gdp.data # => returns metadata for 'FRED/GDP'
+
+# If you were to change an option, like below:
+gdp.transform(:rdiff)
+
+# You'll need to call #reload! or pass `true` as an argument to #data or #metadata
+gdp.reload!
+
+gdp.data
+```
+
 
 ### A Simple Example
 
