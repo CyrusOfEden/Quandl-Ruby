@@ -2,11 +2,9 @@ require 'json'
 require 'csv'
 
 module Quandl
-
   CSV::Converters[:blank_to_nil] = Proc.new do |field|
     field && field.empty? ? nil : field
   end
-
   def self.parse(data, format)
     case format
     when :json

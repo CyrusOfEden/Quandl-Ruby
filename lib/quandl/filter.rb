@@ -1,14 +1,18 @@
 module Quandl
   module Filter
-    def rows(n)
+    def limit(n)
       @options[:rows] = n
       self
     end
 
+    alias_method :rows, :limit
+
     def order(direction)
-      @options[:sort_order] = direction if [:asc, :desc].include? direction
+      @options[:sort_order] = direction.to_sym if [:asc, :desc].include? direction.to_sym
       self
     end
+
+    alias_method :sort, :order
 
     def column(n)
       @options[:column] = n
@@ -16,15 +20,15 @@ module Quandl
     end
 
     def collapse(frequency)
-      if [:none, :daily, :weekly, :monthly, :quarterly, :annual].include? frequency
-        @options[:collapse] = frequency
+      if [:none, :daily, :weekly, :monthly, :quarterly, :annual].include? frequency.to_sym
+        @options[:collapse] = frequency.to_sym
       end
       self
     end
 
     def transform(transformation)
-      if [:diff, :rdiff, :cumul, :normalize].include? transformation
-        @options[:transformation] = transformation
+      if [:diff, :rdiff, :cumul, :normalize].include? transformation.to_sym
+        @options[:transformation] = transformation.to_sym
       end
       self
     end

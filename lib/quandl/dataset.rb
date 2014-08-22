@@ -19,13 +19,13 @@ module Quandl
         if cache && !bust_cache
           cache
         else
-          reload
+          reload!
           instance_variable_get "@#{data}"
         end
       end
     end
 
-    def reload
+    def reload!
       raw_data = Quandl::Request.new('datasets', {
         dataset: query,
         options: options

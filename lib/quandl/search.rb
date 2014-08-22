@@ -1,6 +1,6 @@
 module Quandl
   class Search < Quandl::Dataset
-    def reload
+    def reload!
       raw_data = Quandl::Request.new('datasets', {
         query: query,
         options: options

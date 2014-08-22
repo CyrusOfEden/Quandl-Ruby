@@ -1,6 +1,6 @@
 module Quandl
   class Multiset < Quandl::Dataset
-    def reload
+    def reload!
       raw_data = Quandl::Request.new('multisets', {
         datasets: query,
         options: options

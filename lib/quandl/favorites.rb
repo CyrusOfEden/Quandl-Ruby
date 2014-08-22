@@ -5,7 +5,7 @@ module Quandl
       @options = options
     end
 
-    def reload
+    def reload!
       raw_data = Quandl::Request.new('current_user/collections/datasets/favourites', {
         auth_token: query,
         options: options
