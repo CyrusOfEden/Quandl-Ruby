@@ -8,7 +8,7 @@ A Ruby wrapper for the Quandl API (www.quandl.com).
 
 Add this line to your application's Gemfile:
 
-    gem 'quandl'
+    gem 'quandl_ruby'
 
 And then execute:
 
@@ -16,7 +16,11 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install quandl
+    $ gem install quandl_ruby
+
+Then at the beginning of a file:
+
+    require 'quandl_ruby'
 
 ## Usage
 
