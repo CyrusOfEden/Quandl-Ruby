@@ -9,7 +9,7 @@ module Quandl
     def initialize(base, params)
       path = [Quandl.configuration.api_version, base]
       if Quandl.configuration.auth_token
-        params[:auth_token] = Quandl.configuration.auth_token
+        params[:options][:auth_token] = Quandl.configuration.auth_token
       end
       [:source, :table].each do |param|
         path << params[param] if params[param]
