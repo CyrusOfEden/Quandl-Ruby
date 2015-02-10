@@ -21,7 +21,7 @@ Or install it yourself as:
 Then at the beginning of a file:
 
 ```ruby
-    require 'quandl'
+require 'quandl'
 ```
 
 ## Usage
