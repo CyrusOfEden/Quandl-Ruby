@@ -20,7 +20,9 @@ Or install it yourself as:
 
 Then at the beginning of a file:
 
-    require 'quandl_ruby'
+```ruby
+require 'quandl'
+```
 
 ## Usage
 
