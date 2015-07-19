@@ -42,7 +42,6 @@ This library includes the following classes all namespaced under the `Quandl` mo
 
 - [Dataset](http://www.quandl.com/help/api#A-Simple-Example)
 - [Multiset](http://www.quandl.com/help/api#Multiple-Datasets)
-- [Search](http://www.quandl.com/help/api#Doing-a-Search)
 - [Metadata](http://www.quandl.com/help/api#Getting-Metadata)
 - [Favorites](http://www.quandl.com/help/api#Getting-Favourites)
 
@@ -144,17 +143,6 @@ comparison = Quandl::Multiset.get(datasets).
                limit(10)
 # Unlike the official Quandl REST API, separate source, table, and column numbers
 # With `/` as opposed to `.` to maintain consistency with Quandl::Dataset
-```
-
-### Doing A Search
-
-Note that Quandl::Search does not have access to the API option-setting methods. Instead, it has #per_page and #page, which correspond with the `per_page` and `page` url parameters of the Quandl API
-
-```ruby
-# Get search results for crude oil
-#   Example from: http://www.quandl.com/help/api#Doing-a-Search
-query = 'crude oil'
-results = Quandl::Search.get(query).per_page(20).page(4)
 ```
 
 ### Getting Metadata
