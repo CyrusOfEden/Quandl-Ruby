@@ -1,7 +1,7 @@
 require 'open-uri'
 
 module Quandl
-  API_URI = 'https://www.quandl.com/api/v1/'
+  API_URI = 'https://www.quandl.com/api/'
 
   class Request
     attr_accessor :uri
